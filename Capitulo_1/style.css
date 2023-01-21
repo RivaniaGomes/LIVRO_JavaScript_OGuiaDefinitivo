@@ -1,0 +1,17 @@
+/* Esta é uma folha de estillos CSSÇ ela adiciona estilo na sa~ida do programa */
+.output {
+  font-weight: bold;
+}
+
+#payment {
+  text-decoration: underline;
+}
+
+#graph {
+  border: solid black 1px;
+}
+
+th,
+td {
+  vertical-align: top;
+}

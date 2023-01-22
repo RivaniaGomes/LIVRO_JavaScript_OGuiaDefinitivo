@@ -6,7 +6,7 @@ function calculate() {
   var zipcode = document.getElementById("zipcode");
   var payment = document.getElementById("payment");
   var total = document.getElementById("total");
-  var totalinterest = dcocument.getElementById("totalinterest");
+  var totalinterest = document.getElementById("totalinterest");
 
   //Obtém a entrada do usuário atrtavés dos elementos de entrada. Presume que tudo isso é valído
   var principal = parseFloat(amount.value);
@@ -60,3 +60,60 @@ function save(amount, apr, years, zipcode) {
   }
 }
 
+//Tenta restaurar os campos de entrada  automaticamente quando o documento é carregado pela primeira vez.
+window.onload = function () {
+  //Se o navegador suporta localStorage e temos alguns dados armazenados
+  if (window.localStorage && localStorage.loan_amount) {
+    document.getElementById("amount").value = localStorage.loan_amount;
+    document.getElementById("apr").value = localStorage.loan_apr;
+    document.getElementById("years").value = localStorage.loan_years;
+    document.getElementById("zipcode").value = localStorage.loan_zipcode;
+  }
+};
+
+//Passa a entrada do usuário para um script no lado do servidor que (teoricamente) pode retornar uma lista de links para financeiras locais interessadas em fazer empréstimos.
+//Este exemplo não contém uma implemenmtação real desse serviço de busca de financeiras.
+//Mas se o serviço existisse, essa função funcionária com ele.
+function getLenders(amount, apr, years, zipcode) {
+  //Se o navegador não suporta o objeto XMLHttpRequest, n"ao faz nada
+  if (!window.XMLHttpRequest) return;
+
+  //Localiza o elemento para exibir a lista de financeiras
+  var ad = document.getElementById("lenders");
+  if (!ad) return; //Encerra se não há ponto de saída
+  //Codifica a entrada do usuário como parâmetros de consulta em um URL
+  var url =
+    "getLenders.php" + //URL do serviço mais
+    "?amt=" +
+    encodeURIComponent(amount) + //dados do usuário na string de consulta
+    "&apr=" +
+    encodeURIComponent(apr) +
+    "&yrs=" +
+    encodeURIComponent(years) +
+    "zip=" +
+    encodeURIComponent(zipcode);
+
+  //Busca o conteúdo desse URL usando o objeto XMLHttpRequest
+  var rep = new XMLHttpRequest(); // Inicia um novo pedido
+  req.open("Get", url); //Um pedido GET da HTTP para o url
+  req.send(null); //Envia o pedido sem corpo
+
+  //Antes de retornar, registra uma função de rotina de tratamento de evento que será chamada em um momento posterior, quando a resposta do servidor de HTTP chegar.
+  //Esse tipo de programação assíncrona é muito comum em JavaScript do lado do cliente.
+  req.onreadystatechange = function () {
+    if (re.readyState == 4 && req.status == 200) {
+      //Se chegamos até aqui, obtivemos uma resposta HTTP válida e completa
+      var response = req.responseText; //Resposta HTTP como string
+      var lenders = JSON.parse(response); //Analisa em um array JS
+
+      //Converte o array de objetos lender em uma string HTML
+      var list = "";
+      for (var i = 0; i < lenders.length; i++) {
+        list += "<li> <a href='" + lenders[i].url + "'>" + lenders[i].name + "</a>";
+      }
+
+      //Exibe o código HTML no elemento acima.
+      ad.innerHTML = "<ul>" + list + "</ul>";
+    }
+  };
+}

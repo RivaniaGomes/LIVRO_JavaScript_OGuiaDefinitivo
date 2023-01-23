@@ -75,7 +75,7 @@ window.onload = function () {
 //Este exemplo não contém uma implemenmtação real desse serviço de busca de financeiras.
 //Mas se o serviço existisse, essa função funcionária com ele.
 function getLenders(amount, apr, years, zipcode) {
-  //Se o navegador não suporta o objeto XMLHttpRequest, n"ao faz nada
+  //Se o navegador não suporta o objeto XMLHttpRequest, não faz nada
   if (!window.XMLHttpRequest) return;
 
   //Localiza o elemento para exibir a lista de financeiras

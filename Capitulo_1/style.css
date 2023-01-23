@@ -1,6 +1,49 @@
-/* Esta é uma folha de estillos CSSÇ ela adiciona estilo na sa~ida do programa */
+* {
+  margin: 0 auto;
+  background-color: rgb(82, 132, 219);
+  background-position: center;
+  background-size: contain;
+  color: white;
+}
+
+header {
+  display: flex;
+  padding: 20px 0 20px 0;
+  text-transform: uppercase;
+}
+
+
+input:not(button) {
+  padding: 0 3px 0 3px;
+  color: #4f4d4de1;
+  border-radius: 3px;
+  background-color: aliceblue;
+}
+
+button {
+  background-color: blue;
+  border: none;
+  border-radius: 2px;
+  width: 100%;
+  padding: 2px;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+button:hover {
+background-color: darkblue;
+color: antiquewhite;
+}
+
+canvas {
+  background-color: aliceblue;
+}
+
 .output {
   font-weight: bold;
+  background-color: aliceblue;
+  border-radius: 3px;
+  color: darkslategrey;
 }
 
 #payment {
